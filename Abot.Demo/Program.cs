@@ -12,6 +12,27 @@ namespace Abot.Demo
             log4net.Config.XmlConfigurator.Configure();
             PrintDisclaimer();
 
+            Console.WriteLine("Press any key to start crawl; 'x' to exit....");
+            var key = Console.ReadKey().Key;
+
+            while (key != ConsoleKey.X)
+            {
+                RunJob(args);
+
+                Console.WriteLine();
+                Console.WriteLine("Run complete");
+                Console.WriteLine();
+                Console.WriteLine("Press any key to continue");
+                Console.ReadKey();
+
+                Console.Clear();
+
+                key = Console.ReadKey().Key;
+            }
+        }
+
+        private static void RunJob(string[] args)
+        {
             Uri uriToCrawl = GetSiteToCrawl(args);
 
             IWebCrawler crawler;
@@ -28,15 +49,25 @@ namespace Abot.Demo
             crawler.PageCrawlDisallowedAsync += crawler_PageCrawlDisallowed;
             crawler.PageLinksCrawlDisallowedAsync += crawler_PageLinksCrawlDisallowed;
 
-            //Start the crawl
-            //This is a synchronous call
-            CrawlResult result = crawler.Crawl(uriToCrawl);
+            StartCrawl(crawler, uriToCrawl);
 
             //Now go view the log.txt file that is in the same directory as this executable. It has
             //all the statements that you were trying to read in the console window :).
             //Not enough data being logged? Change the app.config file's log4net log level from "INFO" TO "DEBUG"
 
             PrintDisclaimer();
+        }
+
+        private static void StartCrawl(IWebCrawler crawler, Uri uriToCrawl)
+        {
+//Start the crawl
+            //This is a synchronous call
+            CrawlResult result = crawler.Crawl(uriToCrawl);
+        }
+
+        private static void StartCrawl()
+        {
+            
         }
 
         private static IWebCrawler GetDefaultWebCrawler()
