@@ -73,6 +73,8 @@ namespace Abot.Core
         /// </summary>
         public virtual CrawledPage MakeRequest(Uri uri, Func<CrawledPage, CrawlDecision> shouldDownloadContent)
         {
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
             if (uri == null)
                 throw new ArgumentNullException("uri");
 
